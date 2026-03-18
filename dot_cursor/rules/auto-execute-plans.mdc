@@ -1,0 +1,61 @@
+---
+name: auto-execute-plans
+description: When the user says "execute" or "execute plan" and a .plan.md file is attached or referenced, auto-inject the full execution protocol. Ensures consistent, thorough plan execution every time.
+globs:
+  - "**/*.plan.md"
+alwaysApply: false
+---
+
+# Auto-Execute Plans
+
+## Trigger
+
+This rule activates when:
+- The user says **"execute"**, **"execute plan"**, **"execute this"**, **"implement this plan"**, or similar
+- AND a `.plan.md` file is attached, referenced with `@`, or visible in context
+
+## What To Do
+
+When triggered, treat the user's message as if they said:
+
+> "Execute this plan. Use all relevant skills. Take a deep breath and go step by step. Verify before completeness."
+
+This means you MUST follow the **executing-plans** skill (`.cursor/skills/development/executing-plans/SKILL.md`) exactly:
+
+1. **Read the plan file** completely
+2. **Review critically** — identify questions or concerns before starting
+3. **Create a TodoWrite** tracking all tasks from the plan
+4. **Execute in batches of 3 tasks** — mark in_progress → completed
+5. **Run verifications** as specified in the plan (tests, lints, type checks)
+6. **Report after each batch** — show what was implemented and verification output
+7. **Use verification-before-completion** — no success claims without fresh test evidence
+
+## Mandatory Skills To Load
+
+Before starting execution, ALWAYS read and apply these skills:
+
+1. `.cursor/skills/development/executing-plans/SKILL.md` — the execution protocol
+2. `.cursor/skills/development/verification-before-completion/SKILL.md` — evidence before claims
+3. `.cursor/skills/development/test-driven-development/SKILL.md` — if the plan involves new code
+4. Any domain-specific skills matched by the plan content (check INDEX.md)
+
+## New Session Reminder
+
+If you detect this is an existing long conversation (many prior messages), say:
+
+> **Heads up:** Plan execution works best in a fresh session for maximum context. Consider starting a new chat with just this plan attached.
+
+## After Completion
+
+Use the **verification-before-completion** skill:
+- Run all relevant tests
+- Show test output as evidence
+- Cross-check every plan requirement against what was implemented
+- Only THEN claim completion
+
+## Documentation Audit (Mandatory)
+
+After verification passes, read and follow `.cursor/rules/auto-docs-audit.mdc`:
+1. Run the docs audit protocol against all files modified during this plan execution
+2. Update any stale diagrams or documentation
+3. Include diagram updates in the completion report

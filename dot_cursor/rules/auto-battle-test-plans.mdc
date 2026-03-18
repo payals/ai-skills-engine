@@ -1,0 +1,69 @@
+---
+name: auto-battle-test-plans
+description: Automatically battle-test and stress-test every plan immediately after creation. No plan should be presented to the user without a thorough review.
+globs: []
+alwaysApply: true
+---
+
+# Auto Battle-Test Plans
+
+## Rule
+
+After creating ANY plan (via the `create_plan` tool or by writing a `.plan.md` file), you MUST immediately battle-test it **before** presenting it to the user or asking for confirmation. Do NOT wait for the user to ask.
+
+## Battle-Test Protocol
+
+Once the plan is created, execute the following review as if the user had said:
+
+> "Battle test and stress-test this plan to check for missing inconsistencies, issues, bugs, consistency, edge cases, tests, conventions, observability, friendly UI, intuitive UX, camelCase vs snake_case, correct object and function names, variable names etc."
+
+### Checklist
+
+For every plan, systematically check:
+
+1. **Consistency with codebase** — Do referenced files, functions, classes, and variables actually exist? Are the line numbers accurate? Read the actual files to verify.
+2. **Naming conventions** — Does the plan follow existing conventions? API layer uses camelCase, Python/DB layer uses snake_case. Check object names, function names, variable names, CLI flag names.
+3. **Edge cases** — What happens with empty inputs, missing tables, null values, first-run scenarios, concurrent access?
+4. **Data flow correctness** — Does data actually flow as described? Are intermediate transformations (deduplication, filtering, serialization) in the right order? Do functions receive the arguments they need?
+5. **Test coverage** — Are all new functions covered? Are failure paths tested? Are integration points between new and existing code tested?
+6. **Observability** — Is there adequate logging? Are errors surfaced clearly? Can the user tell what happened if something goes wrong?
+7. **UI/UX impact** — If the plan touches API responses or frontend data, is the shape correct? Are response keys camelCase? Is error handling user-friendly?
+8. **Conflicts** — Does the plan modify files that other pending plans also modify? Are there ordering dependencies between steps?
+9. **Already implemented** — Is any part of the plan already done in the codebase? Check before proposing duplicate work.
+10. **Import paths and dependencies** — Will new imports resolve? Are `__init__.py` files needed? Are third-party dependencies already in `requirements.txt`?
+
+### Output Format
+
+Present findings as a numbered table:
+
+```
+| # | Severity | Issue | Fix |
+|---|----------|-------|-----|
+| 1 | CRITICAL | ...   | ... |
+| 2 | HIGH     | ...   | ... |
+```
+
+Severity levels: CRITICAL (plan will fail or produce wrong results), HIGH (significant gap), MEDIUM (correctness risk or convention violation), LOW (minor improvement).
+
+### After the Battle-Test
+
+**Auto-revise without asking.** The user should only see the final, clean plan.
+
+- If CRITICAL or HIGH issues are found: revise the plan immediately to fix them, then re-run the battle-test on the revised plan.
+- If only MEDIUM/LOW issues: revise the plan to fix them in-place.
+- If no issues found: proceed.
+
+**Loop cap: 2 rounds.** If issues still remain after the second revision, present the plan with any unresolved concerns noted in a "Known Limitations" section at the bottom.
+
+### What the User Sees
+
+Present only the **final revised plan** along with a brief summary:
+
+```
+## Battle-Test Summary
+- **Rounds:** N (e.g., "1 revision needed" or "clean on first pass")
+- **Issues found and fixed:** X (brief list of what was caught and corrected)
+- **Remaining concerns:** Y (only if loop cap was hit)
+```
+
+Do NOT show the user the intermediate drafts or ask for permission to revise.

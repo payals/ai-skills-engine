@@ -1,0 +1,136 @@
+---
+name: auto-docs-audit
+description: After plan executions or major code modifications, audit and update documentation and diagrams in docs/diagrams/ and README.md. Referenced from auto-execute-plans and masterrule.
+globs: []
+alwaysApply: false
+---
+
+# Auto Documentation & Diagram Audit
+
+## When This Runs
+
+1. **After every plan execution** (referenced from `auto-execute-plans.mdc`)
+2. **After any modification touching 3+ files** in `bin/core/`, `bin/api/`, or `prompts/`
+
+## Skip Conditions
+
+Do NOT run this audit if changes are **exclusively** in:
+- `testing/` (test-only changes rarely affect architecture diagrams)
+- `ui/` (frontend changes don't affect backend diagrams)
+- `docs/` (documentation-only changes)
+- `.cursor/` (rule/config changes)
+
+If changes span both skippable and non-skippable paths, run the audit.
+
+---
+
+## Code-Path-to-Diagram Mapping
+
+When files in the left column are modified, check and update the diagrams in the right column.
+
+### Graph Structure & Flow
+
+| Modified File(s) | Diagrams to Check |
+|---|---|
+| `bin/core/graph/__init__.py` | `docs/diagrams/architecture/graph_pipeline_current.mmd` |
+| `bin/core/graph/validation.py` | `docs/diagrams/architecture/graph_pipeline_current.mmd`, `docs/diagrams/components/validation_loop.mmd` |
+| `bin/core/graph/edges.py` | `docs/diagrams/architecture/graph_pipeline_current.mmd`, `docs/diagrams/components/validation_loop.mmd` |
+| `bin/core/graph/runner.py` | `docs/diagrams/architecture/graph_pipeline_current.mmd` |
+
+### Node Implementations
+
+| Modified File(s) | Diagrams to Check |
+|---|---|
+| `bin/core/graph/nodes/*.py` (any) | `docs/diagrams/architecture/node_function_mapping.mmd` |
+| `bin/core/graph/nodes/triage.py` | `docs/diagrams/components/triage_decision_tree.mmd` |
+| `bin/core/graph/nodes/chunk.py` | `docs/diagrams/components/chunking_flow.mmd` |
+| `bin/core/graph/nodes/normalize.py` | `docs/diagrams/components/validation_loop.mmd` (Normalizer path) |
+| `bin/core/graph/nodes/correct.py` | `docs/diagrams/components/validation_loop.mmd` (Correction path) |
+| `bin/core/graph/nodes/sandbox.py` | `docs/diagrams/components/validation_loop.mmd` |
+
+### Probes & Validation
+
+| Modified File(s) | Diagrams to Check |
+|---|---|
+| `bin/core/graph/probes.py` | `docs/diagrams/components/validation_loop.mmd` (Probes sections) |
+
+### State & Data Flow
+
+| Modified File(s) | Diagrams to Check |
+|---|---|
+| `bin/core/graph/state.py` | `docs/diagrams/dependencies/data_flow_graph.mmd` |
+| `bin/core/graph/observability.py` | `docs/diagrams/observability/telemetry_flow.mmd` |
+
+### Core Modules
+
+| Modified File(s) | Diagrams to Check |
+|---|---|
+| `bin/core/llm_gateway.py` | `docs/diagrams/observability/llm_call_tracing.mmd`, `docs/diagrams/components/llm_gateway_integration.mmd` |
+| `bin/core/sandbox_executor.py` | `docs/diagrams/architecture/node_function_mapping.mmd` (Sandbox table) |
+| `bin/core/stub_generator.py` | `docs/diagrams/architecture/node_function_mapping.mmd` (Sandbox table) |
+| `bin/core/*_preprocessor.py` | `docs/diagrams/architecture/node_function_mapping.mmd` (Preprocessor table) |
+
+---
+
+## Document Mapping
+
+When files in the left column are modified, verify the corresponding section of the document in the right column.
+
+| Modified File(s) | Document | Section to Verify |
+|---|---|---|
+| `bin/core/graph/**` | `README.md` | Architecture, Key Modules table |
+| `bin/core/graph/**` | `docs/diagrams/README.md` | Node Implementation Mapping, Edge Functions, Probes tables |
+| `testing/**` | `README.md` | Testing section (layers, markers, commands) |
+| `.github/workflows/**` | `README.md` | CI/CD section (jobs table) |
+| `bin/tools/**` | `README.md` | Self-Improvement Loop section |
+| `bin/api/**` | `README.md` | Key Modules table |
+| `bin/core/*_preprocessor.py` | `docs/diagrams/README.md` | Dialect Preprocessors table |
+| New node or edge function added | `docs/diagrams/README.md` | Node Implementation Mapping, Edge Functions tables |
+| New probe added | `docs/diagrams/README.md` | Probes table |
+
+---
+
+## Audit Protocol
+
+### Step 1: Identify Modified Files
+
+Determine which files were modified. Use one of:
+- The list of files you just edited in the current session
+- `git diff --name-only` if checking against the last commit
+
+### Step 2: Match Against Mappings
+
+Walk the Code-Path-to-Diagram Mapping and Document Mapping tables above. Collect a set of candidate diagrams and document sections to check.
+
+If no candidates match, skip the audit and say nothing.
+
+### Step 3: Verify Each Candidate Diagram
+
+For each matched diagram file:
+
+1. **Read the diagram** and the corresponding source file(s)
+2. **Check node/function names** — do names in the diagram still match function names in the code?
+3. **Check file paths** — do file path references in the diagram still point to existing files?
+4. **Check for new additions** — were new nodes, functions, probes, edges, or modules added that should appear in the diagram?
+5. **Check for removals** — were nodes, functions, or modules removed that should be dropped from the diagram?
+
+If everything matches, move on. If stale, update the diagram.
+
+### Step 4: Verify Document Tables
+
+For each matched document section:
+
+1. **Read the section** (README.md or docs/diagrams/README.md)
+2. **Cross-reference tables** against actual code — are all rows current?
+3. **Check for missing entries** — new nodes, probes, preprocessors, edge functions, etc.
+4. **Update the "Recent Updates" section** in `docs/diagrams/README.md` if diagram content was changed
+
+### Step 5: Report
+
+Make updates silently alongside your other edits. Only inform the user with a brief summary:
+
+> **Docs audit:** Updated N diagram(s): [list]. Updated [document]: [what changed].
+
+If nothing needed updating:
+
+> **Docs audit:** All diagrams and docs are current — no updates needed.

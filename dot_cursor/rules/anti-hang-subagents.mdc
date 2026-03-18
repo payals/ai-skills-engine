@@ -1,0 +1,58 @@
+---
+name: anti-hang-subagents
+description: Prevents long-running subagent tasks from hanging by enforcing chunking, timeouts, and progressive output strategies.
+globs: []
+alwaysApply: true
+---
+
+# Anti-Hang Safeguards for Subagents
+
+## Problem
+
+When processing large document sets (100+ requirement rows, 17+ supplemental documents), single subagent calls can exhaust context windows and appear to hang.
+
+## Rules
+
+### 1. Never Process All Rows in One Call
+
+When a task involves processing ALL requirement rows (e.g., generating row responses, solution drafts, supplemental docs):
+- Split into batches of **20 rows** maximum
+- Process each batch as a separate subagent or sequential step
+- Write outputs after EACH batch (never accumulate everything in memory)
+
+### 2. Write Incrementally
+
+Never accumulate all outputs and write at the end. Instead:
+- Write each output file as soon as it is generated
+- This ensures partial progress is saved even if the session is interrupted
+- The user can check `./pipeline/orchestrate.sh status` at any time to see progress
+
+### 3. Subagent Prompt Size Limits
+
+When dispatching subagents via the Task tool:
+- Keep the prompt under 2000 words
+- Include only the context the subagent needs (not the entire project)
+- Reference file paths instead of pasting file contents into the prompt
+- Tell the subagent to READ the files itself
+
+### 4. Avoid Reading Entire Directories Inline
+
+When instructed to "read all files from directory X":
+- List the directory first
+- Read files one at a time or in small groups
+- Summarize as you go rather than loading everything simultaneously
+
+### 5. Progress Checkpoints
+
+For multi-stage phases (like Phase 5 with 6 sequential stages):
+- Report progress after each stage completes
+- Write intermediate outputs so progress is visible
+- If a stage fails, the user can restart from that stage rather than re-running the entire phase
+
+### 6. Fresh Sessions Prevent Accumulation
+
+Each pipeline phase runs in a FRESH Cursor session specifically to prevent context accumulation from prior phases. Do not try to combine multiple phases in a single session.
+
+### 7. Parallel Work Limits
+
+Never dispatch more than 4 subagents concurrently. The coordinator protocol allows up to 4, but for this pipeline 2-3 concurrent subagents per phase is the practical maximum.

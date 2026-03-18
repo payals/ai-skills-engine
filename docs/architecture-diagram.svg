@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 900">
+  <defs>
+    <style>
+      .box { fill: #ffffff; stroke: #2563eb; stroke-width: 2; }
+      .header-box { fill: #2563eb; stroke: #1e40af; stroke-width: 2; }
+      .skill-box { fill: #f0f9ff; stroke: #0ea5e9; stroke-width: 2; }
+      .rule-box { fill: #fef3c7; stroke: #f59e0b; stroke-width: 2; }
+      .text { font-family: Arial, sans-serif; font-size: 14px; fill: #1f2937; }
+      .header-text { font-family: Arial, sans-serif; font-size: 14px; fill: #ffffff; font-weight: bold; }
+      .title-text { font-family: Arial, sans-serif; font-size: 16px; fill: #1f2937; font-weight: bold; }
+      .small-text { font-family: Arial, sans-serif; font-size: 12px; fill: #6b7280; }
+      .arrow { fill: none; stroke: #2563eb; stroke-width: 2; marker-end: url(#arrowhead); }
+      .decision-arrow { fill: none; stroke: #10b981; stroke-width: 2; marker-end: url(#arrowhead-green); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#2563eb" />
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#10b981" />
+    </marker>
+  </defs>
+
+  <text x="400" y="30" text-anchor="middle" class="title-text" font-size="20">AI Skills System Architecture</text>
+
+  <rect x="300" y="60" width="200" height="60" rx="5" class="header-box"/>
+  <text x="400" y="85" text-anchor="middle" class="header-text">User Request</text>
+  <text x="400" y="105" text-anchor="middle" class="header-text">"Fix this Docker build"</text>
+
+  <path d="M 400 120 L 400 160" class="arrow"/>
+
+  <rect x="250" y="160" width="300" height="80" rx="5" class="rule-box"/>
+  <text x="400" y="185" text-anchor="middle" class="title-text">Masterrule (Always Applied)</text>
+  <text x="400" y="205" text-anchor="middle" class="small-text">Enforces mandatory skill scanning</text>
+  <text x="400" y="225" text-anchor="middle" class="small-text">Reads .cursor/napkin.md for context</text>
+
+  <path d="M 400 240 L 400 280" class="arrow"/>
+
+  <rect x="250" y="280" width="300" height="80" rx="5" class="skill-box"/>
+  <text x="400" y="305" text-anchor="middle" class="title-text">Skills Index</text>
+  <text x="400" y="325" text-anchor="middle" class="small-text">.cursor/skills/INDEX.md</text>
+  <text x="400" y="345" text-anchor="middle" class="small-text">Matches keywords to skills</text>
+
+  <path d="M 400 360 L 400 400" class="arrow"/>
+
+  <rect x="250" y="400" width="300" height="60" rx="5" class="box"/>
+  <text x="400" y="425" text-anchor="middle" class="text">Keyword: "Docker"</text>
+  <text x="400" y="445" text-anchor="middle" class="small-text">Matches docker-expert skill</text>
+
+  <path d="M 400 460 L 400 500" class="arrow"/>
+
+  <rect x="250" y="500" width="300" height="80" rx="5" class="skill-box"/>
+  <text x="400" y="525" text-anchor="middle" class="title-text">Load Skill</text>
+  <text x="400" y="545" text-anchor="middle" class="small-text">.cursor/skills/development/</text>
+  <text x="400" y="565" text-anchor="middle" class="small-text">docker-expert/SKILL.md</text>
+
+  <path d="M 400 580 L 400 620" class="arrow"/>
+
+  <rect x="200" y="620" width="400" height="80" rx="5" class="rule-box"/>
+  <text x="400" y="645" text-anchor="middle" class="title-text">Coordinator Mode</text>
+  <text x="400" y="665" text-anchor="middle" class="small-text">Classifies task complexity</text>
+  <text x="400" y="685" text-anchor="middle" class="small-text">SIMPLE or COORDINATED?</text>
+
+  <path d="M 300 700 L 150 740" class="decision-arrow"/>
+  <path d="M 500 700 L 650 740" class="decision-arrow"/>
+
+  <rect x="50" y="740" width="200" height="80" rx="5" class="box"/>
+  <text x="150" y="765" text-anchor="middle" class="title-text">SIMPLE Task</text>
+  <text x="150" y="785" text-anchor="middle" class="small-text">Direct action</text>
+  <text x="150" y="805" text-anchor="middle" class="small-text">Apply skill immediately</text>
+
+  <rect x="550" y="740" width="200" height="120" rx="5" class="box"/>
+  <text x="650" y="765" text-anchor="middle" class="title-text">COORDINATED Task</text>
+  <text x="650" y="785" text-anchor="middle" class="small-text">1. Assess (explore subagents)</text>
+  <text x="650" y="805" text-anchor="middle" class="small-text">2. Plan (TodoWrite)</text>
+  <text x="650" y="825" text-anchor="middle" class="small-text">3. Dispatch (parallel subagents)</text>
+  <text x="650" y="845" text-anchor="middle" class="small-text">4. Verify (reviews + tests)</text>
+
+  <path d="M 150 820 L 300 870" class="arrow"/>
+  <path d="M 650 860 L 500 870" class="arrow"/>
+
+  <rect x="300" y="870" width="200" height="60" rx="5" class="header-box"/>
+  <text x="400" y="895" text-anchor="middle" class="header-text">AI Response</text>
+  <text x="400" y="915" text-anchor="middle" class="header-text">with Skill Proof</text>
+
+  <text x="50" y="200" class="small-text">Always runs</text>
+  <text x="50" y="215" class="small-text">first</text>
+
+  <text x="700" y="320" class="small-text">280+ skills</text>
+  <text x="700" y="335" class="small-text">organized by</text>
+  <text x="700" y="350" class="small-text">category</text>
+
+  <rect x="20" y="20" width="15" height="15" class="rule-box"/>
+  <text x="40" y="32" class="small-text">Rules (Always Applied)</text>
+
+  <rect x="20" y="40" width="15" height="15" class="skill-box"/>
+  <text x="40" y="52" class="small-text">Skills (Loaded on Demand)</text>
+</svg>

@@ -1,0 +1,78 @@
+---
+name: pipeline-execution
+description: When executing an RFP pipeline phase, inject agent context and enforce pipeline rules. Triggered by pipeline prompt files.
+globs:
+  - "pipeline/prompts/*.md"
+alwaysApply: false
+---
+
+# Pipeline Execution Mode
+
+## Trigger
+
+This rule activates when the user references a file matching `pipeline/prompts/phase*.md` or says "execute phase", "run pipeline", "RFP pipeline".
+
+## Behavior
+
+### 1. Read the Phase Prompt Fully
+
+Read the referenced prompt file from `pipeline/prompts/`. It contains:
+- Which agents to impersonate
+- Which upstream artifacts to read
+- Which outputs to produce
+- Verification criteria
+
+### 2. Read Agent Definitions
+
+For each agent mentioned in the prompt, read its full definition from `04_agent_workspace/{agent_name}/`:
+- `role.md` — what the agent does
+- `workflow.md` — step-by-step execution (FOLLOW THIS)
+- `inputs.md` — what to read
+- `outputs.md` — what to write
+- `constraints.md` — what NOT to do
+
+### 3. Apply Pipeline Rules
+
+These rules are ALWAYS in effect during pipeline execution:
+
+- **Read-only upstream:** Never modify files created by earlier phases
+- **Write boundaries:** Only write to directories specified in the agent's `outputs.md`
+- **Claim discipline:** Follow `00_control_plane/claim_validation_rules.md` for all generated content
+- **Style compliance:** Follow `00_control_plane/response_style_guide.md` for all responses
+- **Naming conventions:** Follow `00_control_plane/naming_conventions.md` for all filenames
+
+### 4. Use Subagents for Parallel Work
+
+When the phase prompt specifies parallel subagents:
+- Use the **Task tool** with `subagent_type="generalPurpose"`
+- Include the FULL subagent prompt from the phase file (do not summarize)
+- Set explicit file boundaries so no two subagents write to the same directory
+- Wait for all subagents to complete before proceeding to verification
+
+### 5. Batch Large Operations
+
+When processing all requirement rows:
+- Process in batches of 20 rows maximum per subagent call
+- This prevents context window exhaustion
+- Verify each batch produced expected outputs before starting the next
+
+### 6. Verify Before Claiming Done
+
+Before reporting phase completion:
+1. Check every artifact listed in the "Verification" section of the prompt
+2. Confirm files exist AND are non-empty
+3. Report the count and status of each artifact category
+4. If any artifact is missing, attempt to generate it before failing
+
+### 7. Log Phase Completion
+
+After successful verification, if `pipeline/phase_log.md` does not exist, create it.
+Append a timestamped entry:
+
+```
+## Phase N: {phase_name}
+- Completed: {timestamp}
+- Artifacts produced: {count}
+- Subagents dispatched: {count}
+- Issues encountered: {list or "None"}
+```

@@ -1,0 +1,178 @@
+---
+alwaysApply: true
+---
+# Coordinator Session Mode
+
+Every session operates as a **coordinator**. Classify the task, then either act directly or orchestrate subagents.
+
+## Step 0: Orientation (every session)
+
+Read `.cursor/codebase_graph.json` for module map and dependency info. Read `.cursor/napkin.md` silently. Do NOT read large source files in the coordinator — use explore subagents for that.
+
+## Step 1: Classify Complexity
+
+Before doing heavy work, classify:
+
+**SIMPLE — act directly, no subagents:**
+- Single-file edits, typo fixes, config changes
+- Codebase questions answerable from graph/grep
+- Single test fix with obvious cause
+- Documentation-only changes
+- Running a command the user asked for
+- Any task completable in 1-2 focused steps
+
+**COORDINATED — full coordinator protocol:**
+- 3+ independent work streams across different modules/subsystems
+- Multi-module feature implementation
+- Plan creation + execution for non-trivial features
+- Bug analysis spanning multiple subsystems
+- Codebase maintenance / cleanup tasks
+- Architecture changes touching 6+ files
+
+If borderline, prefer SIMPLE. Coordination overhead only pays off with true parallelism.
+
+## Coordinator Protocol (COORDINATED tasks only)
+
+### Phase 1: ASSESS
+
+Dispatch 1-2 **explore** subagents (subagent_type="explore") to gather context from different parts of the codebase. Use thoroughness="medium" for focused areas, "very thorough" for broad tasks.
+
+The coordinator reads `codebase_graph.json` for structure — never opens files just to understand what's in them. Identify:
+- Independent work streams (parallel tracks)
+- Dependent work streams (sequential tracks)
+- Files each track will touch (for conflict prevention)
+
+### Phase 2: PLAN
+
+Create a decomposition using TodoWrite:
+- One todo per parallel track, plus one for final verification
+- Each track gets: scope, files it will modify, acceptance criteria
+- **CRITICAL**: No two concurrent subagents may edit the same file. If tracks share files, make them sequential.
+
+For tasks that warrant a `.plan.md`, create it and battle-test per `auto-battle-test-plans` rule.
+
+### Phase 3: DISPATCH
+
+Launch up to 4 **generalPurpose** subagents concurrently (one per independent track). Each subagent prompt MUST include:
+
+```
+1. TASK: Full task description (never reference a file for them to read)
+2. CONTEXT: Relevant codebase graph excerpt (modules they'll touch, their dependencies)
+3. BOUNDARIES: "You may edit: [X, Y, Z]. Do NOT touch: [A, B, C]."
+4. RULES (summarized as bullets, not full text):
+   - Every new function/class needs a test in testing/
+   - Every bug fix needs a regression test
+   - Follow existing code style and conventions
+   - Use ConversionRepository for DB access, not raw SQL
+   - Python identifiers are snake_case
+5. NAPKIN: Any relevant entries from napkin.md that apply to this track
+6. OUTPUT FORMAT: "Report back: (a) files changed, (b) what you implemented,
+   (c) test results, (d) concerns or open questions."
+```
+
+**Additional rule injection by task type:**
+- Bug fixes → include holistic-bug-analysis summary (symptom vs root cause, abstraction levels, blast radius)
+- New features → include holistic-testing summary (behavioral tests first, fixture files in testing/fixtures/)
+- DB-touching code → include db-cheatsheet column references for relevant tables
+
+### Phase 4: MONITOR
+
+As each subagent completes:
+1. Read its result
+2. Store a **compact summary** (3-5 lines: files changed, what was done, concerns) — not the full output
+3. Update TodoWrite status
+4. If subagent B depends on A's output: pass A's compact summary into B's prompt via new dispatch (not resume, to keep context fresh)
+
+### Phase 5: VERIFY
+
+For each completed implementation subagent, dispatch two **read-only** review subagents:
+
+**5a. Spec compliance review** (subagent_type="generalPurpose", readonly=true):
+```
+You are reviewing whether an implementation matches its specification.
+
+## Requirements
+[paste the track's acceptance criteria]
+
+## Implementer Claims
+[paste the implementer's compact summary]
+
+## Your Job
+Read the actual code. Do NOT trust the implementer's report.
+- Check: Did they implement everything requested?
+- Check: Did they build anything NOT requested?
+- Check: Did they misunderstand any requirement?
+Verify by reading code, not by trusting the report.
+
+Report: PASS or FAIL with specific file:line references for issues.
+```
+
+**5b. Code quality review** (subagent_type="generalPurpose", readonly=true):
+Only dispatch AFTER spec compliance passes.
+```
+Review the code changes for quality.
+Files changed: [list from implementer summary]
+
+Check:
+- Tests exist and verify behavior (not just mocks)
+- No duplicate functions/modules
+- Error handling follows structured issue dict pattern
+- Code follows existing style and conventions
+- No obvious bugs, race conditions, or resource leaks
+
+Report: APPROVED or ISSUES with specific file:line references.
+```
+
+**Review loop rules:**
+- If either reviewer rejects: dispatch a NEW generalPurpose subagent with specific fix instructions (don't pollute the original subagent's context)
+- Max 2 review rounds per track. If still failing after 2 rounds, the coordinator takes over directly.
+
+### Phase 6: ACCEPT
+
+After all tracks pass both reviews:
+1. Run tests via **shell** subagent: `source venv/bin/activate && pytest testing/ -m "not slow and not e2e and not live" --tb=short 2>&1 | tail -3`
+   - Set `block_until_ms: 120000` (full suite takes ~40s)
+2. If tests fail: dispatch targeted fix subagent(s) for failing tests only
+3. Synthesize a final report for the user:
+   - What was accomplished (per track)
+   - Files changed (aggregate)
+   - Test results
+   - Any remaining concerns or follow-ups
+
+## Context Efficiency Guidelines
+
+These apply in BOTH simple and coordinated modes:
+
+1. **Graph-first**: Read `codebase_graph.json` before opening files to understand structure
+2. **Subagent-first reading**: For files >200 lines, dispatch an explore subagent instead of reading in coordinator
+3. **Compact state**: After each subagent, store 3-5 line summaries, not full outputs
+4. **Focused injection**: Each subagent gets ONLY context for its track — not the full project knowledge
+5. **TodoWrite as memory**: Use TodoWrite to track progress instead of relying on conversation history
+6. **Batched dispatch**: When launching multiple subagents, put them in a single message for true parallelism
+
+## Batching Strategy
+
+If more than 4 parallel tracks exist:
+- Launch the first 4 concurrently
+- As each completes and passes review, launch the next from the queue
+- Prioritize tracks that others depend on
+
+## Integration with Existing Rules
+
+This rule orchestrates but does NOT replace:
+- **masterrule**: Skill scanning still runs. Coordinator uses skill results to inform subagent prompts.
+- **test-with-code**: Injected into every implementer subagent. Coordinator verifies in Phase 6.
+- **holistic-bug-analysis**: Injected into bug-fix subagents.
+- **holistic-testing**: Injected into feature-implementation subagents.
+- **codebase-maintenance**: Coordinator defers to this rule for cleanup tasks.
+- **auto-battle-test-plans**: Plans created in Phase 2 are still battle-tested.
+- **db-cheatsheet**: Injected when subagent touches DB code.
+
+## Anti-Patterns
+
+- **Over-coordinating**: Don't dispatch subagents for a 2-line fix. SIMPLE mode exists for a reason.
+- **Context dumping**: Don't paste the entire codebase graph into every subagent. Extract the relevant slice.
+- **Serial subagents for parallel work**: If tracks are independent, dispatch them concurrently.
+- **Coordinator doing implementation**: The coordinator plans, dispatches, monitors, and verifies. It does not write production code in coordinated mode (except during escalation).
+- **Skipping reviews**: Every implementation subagent gets spec + quality review. No exceptions.
+- **Trusting without verifying**: Always run the test suite in Phase 6, even if all reviews passed.

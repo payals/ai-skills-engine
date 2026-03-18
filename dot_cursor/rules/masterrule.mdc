@@ -1,0 +1,66 @@
+---
+name: masterrule
+description: Master rule
+globs:
+   - "**" 
+alwaysApply: true
+---
+
+# Overview
+
+## MANDATORY SKILL SCANNING PROTOCOL (self-enforcing)
+
+Before ANY response, you MUST complete these steps:
+
+### Step 1: Scan for Relevant Skills
+1. **Read the Skills Index**: `.cursor/skills/INDEX.md`
+2. **Parse user message** for keywords matching skill categories
+3. **Match task type** to skills using the Quick Dispatch Table in INDEX.md
+
+### Step 2: Load Applicable Skills
+For each matching skill:
+1. **Read the SKILL.md file**: `.cursor/skills/{category}/{skill}/SKILL.md`
+2. **If skill has sub-skills**, read those too
+
+### Step 3: Produce Skill Proof Header
+Every response MUST start with:
+```
+## Skill Proof
+**Skills Used:** [skill-name-1], [skill-name-2], ...
+**From:** [exact H1 title from SKILL.md]
+**Key Principle:** [one verbatim bullet from SKILL.md, max 20 words]
+```
+
+### Step 4: Apply or Declare None
+- **If skills apply**: Follow skill instructions exactly
+- **If no skills apply**: State "No applicable skills found for this task"
+
+### Enforcement Rules
+- Any response without "Skill Proof" header is **invalid**
+- If INDEX.md is not accessible, ask user to add it to context
+- If even 1% chance a skill applies, you MUST read it (per using-superpowers skill)
+- Process skills (brainstorming, when-stuck) come BEFORE implementation skills
+
+### Skill Priority Order
+1. **Process skills first**: brainstorming, when-stuck, create-plan (determine HOW to approach)
+2. **Implementation skills second**: senior-backend, docker-expert, etc. (guide execution)
+3. **Verification skills last**: verification-before-completion (before claiming done)
+
+## Napkin — Persistent Mistake Memory
+
+Adapted from [blader/napkin](https://github.com/blader/napkin). A per-repo scratchpad that compounds across sessions.
+
+### Protocol
+1. **First interaction of a session**: Read `.cursor/napkin.md` and apply any relevant lessons silently (don't list them back to the user).
+2. **During work**: When any of the following occur, **queue** a napkin entry:
+   - You make a wrong assumption or failed approach → **My Mistakes**
+   - The user corrects your behavior or approach → **User Corrections**
+   - Something non-obvious about the repo surprises you → **Repo Surprises**
+   - The user states a preference about style/workflow/communication → **Preferences**
+   - An approach works particularly well → **What Worked**
+3. **When to write**: Only write to `napkin.md` when you are ALREADY making other file edits in the same response. Piggyback the napkin write alongside those edits. **NEVER** make a napkin edit as the sole or final tool call in a response — this causes the Cursor IDE to hang with no Accept button.
+4. **Format**: One bullet per entry, prefixed with ISO date (`YYYY-MM-DD`). Keep entries to one line. Prune entries older than 60 days or that are clearly superseded.
+5. **Don't mention** the napkin to the user unless asked. Just use it.
+
+## Project Overview
+see SPEC.md file in 00_control_plane subdirectory

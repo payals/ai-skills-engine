@@ -1,0 +1,173 @@
+{
+  "version": "2026-03-16",
+  "purpose": "Compact skill routing manifest for low-token candidate selection before reading full SKILL.md files.",
+  "mandatory_first": [
+    {
+      "name": "using-superpowers",
+      "path": ".cursor/skills/development/using-superpowers/SKILL.md",
+      "when": "start of every conversation"
+    }
+  ],
+  "priority_order": [
+    "process",
+    "implementation",
+    "verification"
+  ],
+  "task_type_dispatch": {
+    "planning_design": [
+      ".cursor/skills/development/brainstorming/SKILL.md",
+      ".cursor/skills/development/create-plan/SKILL.md"
+    ],
+    "bug_fixing_debugging": [
+      ".cursor/skills/problem-solving/when-stuck/SKILL.md",
+      ".cursor/skills/development/error-resolver/SKILL.md"
+    ],
+    "testing": [
+      ".cursor/skills/development/test-driven-development/SKILL.md",
+      ".cursor/skills/development/testing-patterns/SKILL.md"
+    ],
+    "test_failures": [
+      ".cursor/skills/development/test-fixing/SKILL.md"
+    ],
+    "code_review": [
+      ".cursor/skills/development/code-reviewer/SKILL.md",
+      ".cursor/skills/development/code-review-checklist/SKILL.md"
+    ],
+    "git_commits": [
+      ".cursor/skills/development/git-commit/SKILL.md"
+    ],
+    "verification": [
+      ".cursor/skills/development/verification-before-completion/SKILL.md"
+    ],
+    "architecture": [
+      ".cursor/skills/development/software-architecture/SKILL.md",
+      ".cursor/skills/development/senior-architect/SKILL.md"
+    ],
+    "backend_api": [
+      ".cursor/skills/development/senior-backend/SKILL.md"
+    ],
+    "frontend_ui": [
+      ".cursor/skills/development/senior-frontend/SKILL.md",
+      ".cursor/skills/development/frontend-dev-guidelines/SKILL.md",
+      ".cursor/skills/web-development/react-best-practices/SKILL.md"
+    ],
+    "docker": [
+      ".cursor/skills/development/docker-expert/SKILL.md"
+    ],
+    "documentation": [
+      ".cursor/skills/document-processing/doc-coauthoring/SKILL.md",
+      ".cursor/skills/document-processing/documentation-templates/SKILL.md"
+    ],
+    "ai_ml_prompts": [
+      ".cursor/skills/context-engineering/SKILL.md",
+      ".cursor/skills/development/senior-ml-engineer/SKILL.md",
+      ".cursor/skills/development/senior-prompt-engineer/SKILL.md"
+    ]
+  },
+  "keyword_dispatch": {
+    "plan": [
+      ".cursor/skills/development/brainstorming/SKILL.md",
+      ".cursor/skills/development/create-plan/SKILL.md",
+      ".cursor/skills/development/writing-plans/SKILL.md"
+    ],
+    "planning": [
+      ".cursor/skills/development/brainstorming/SKILL.md",
+      ".cursor/skills/development/create-plan/SKILL.md",
+      ".cursor/skills/development/writing-plans/SKILL.md"
+    ],
+    "design": [
+      ".cursor/skills/development/brainstorming/SKILL.md",
+      ".cursor/skills/development/software-architecture/SKILL.md"
+    ],
+    "testing": [
+      ".cursor/skills/development/test-driven-development/SKILL.md",
+      ".cursor/skills/development/testing-patterns/SKILL.md"
+    ],
+    "test": [
+      ".cursor/skills/development/test-driven-development/SKILL.md",
+      ".cursor/skills/development/testing-patterns/SKILL.md"
+    ],
+    "debug": [
+      ".cursor/skills/problem-solving/when-stuck/SKILL.md",
+      ".cursor/skills/development/error-resolver/SKILL.md"
+    ],
+    "bug": [
+      ".cursor/skills/problem-solving/when-stuck/SKILL.md",
+      ".cursor/skills/development/error-resolver/SKILL.md"
+    ],
+    "review": [
+      ".cursor/skills/development/code-reviewer/SKILL.md",
+      ".cursor/skills/development/code-review-checklist/SKILL.md",
+      ".cursor/skills/development/verification-before-completion/SKILL.md"
+    ],
+    "commit": [
+      ".cursor/skills/development/git-commit/SKILL.md"
+    ],
+    "git": [
+      ".cursor/skills/development/git-commit/SKILL.md",
+      ".cursor/skills/development/using-git-worktrees/SKILL.md"
+    ],
+    "database": [
+      ".cursor/skills/development/database-design/SKILL.md",
+      ".cursor/skills/database/supabase-postgres-best-practices/SKILL.md",
+      ".cursor/skills/database/using-neon/SKILL.md"
+    ],
+    "api": [
+      ".cursor/skills/development/senior-backend/SKILL.md"
+    ],
+    "frontend": [
+      ".cursor/skills/development/senior-frontend/SKILL.md",
+      ".cursor/skills/web-development/react-best-practices/SKILL.md"
+    ],
+    "react": [
+      ".cursor/skills/development/senior-frontend/SKILL.md",
+      ".cursor/skills/web-development/react-best-practices/SKILL.md"
+    ],
+    "docker": [
+      ".cursor/skills/development/docker-expert/SKILL.md"
+    ],
+    "documentation": [
+      ".cursor/skills/document-processing/doc-coauthoring/SKILL.md",
+      ".cursor/skills/document-processing/documentation-templates/SKILL.md"
+    ],
+    "docs": [
+      ".cursor/skills/document-processing/doc-coauthoring/SKILL.md",
+      ".cursor/skills/document-processing/documentation-templates/SKILL.md"
+    ],
+    "architecture": [
+      ".cursor/skills/development/software-architecture/SKILL.md",
+      ".cursor/skills/development/senior-architect/SKILL.md"
+    ],
+    "llm": [
+      ".cursor/skills/context-engineering/SKILL.md",
+      ".cursor/skills/development/senior-prompt-engineer/SKILL.md"
+    ],
+    "tokens": [
+      ".cursor/skills/context-engineering/SKILL.md"
+    ],
+    "context": [
+      ".cursor/skills/context-engineering/SKILL.md"
+    ],
+    "agent": [
+      ".cursor/skills/context-engineering/SKILL.md",
+      ".cursor/skills/ai-research/subagent-driven-development/SKILL.md"
+    ],
+    "subagent": [
+      ".cursor/skills/ai-research/subagent-driven-development/SKILL.md",
+      ".cursor/skills/development/dispatching-parallel-agents/SKILL.md"
+    ]
+  },
+  "fallback_sources": [
+    ".cursor/skills/INDEX.md"
+  ],
+  "openviking_policy": {
+    "role": "advisory_shortlist_only",
+    "allowed": true,
+    "notes": [
+      "Use OpenViking only to semantically shortlist candidate skills when the user request is fuzzy or overlaps multiple categories.",
+      "Do not treat OpenViking retrieval as authoritative.",
+      "Always verify shortlisted skills against this manifest or INDEX.md before reading full SKILL.md files.",
+      "Mandatory process skills still win even if OpenViking does not return them."
+    ]
+  }
+}
