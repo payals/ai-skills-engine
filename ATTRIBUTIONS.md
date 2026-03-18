@@ -21,49 +21,60 @@ All rules in `.cursor/rules/` are original creations for this project:
 
 **Note**: The napkin system in `masterrule.mdc` is adapted from [blader/napkin](https://github.com/blader/napkin).
 
-### Custom Skills (~40-50 skills)
+### Custom & Customized Skills (~35-45 skills)
+
+### Fully Custom (Original Work)
 
 #### Core Workflow Skills
 
-- **`project-tracker`** - Persistent project history journal with tracker file maintenance protocol
-- **`pipeline-evolution`** - Self-improving pipeline system that harvests insights and promotes them to control plane
-- **`verification-before-completion`** - Evidence-before-claims protocol with "Iron Law" of verification
-- **`executing-plans`** - Batch execution with checkpoints and architect review
-- **`writing-plans`** - Comprehensive implementation plans with TDD focus
-- **`brainstorming`** - Idea-to-design dialogue with YAGNI enforcement
-- **`using-superpowers`** - Skill discovery protocol with task-to-skill mapping
-- **`feature-design-assistant`** - Natural collaborative dialogue for feature planning
-- **`git-commit`** - Conventional commit message automation
-- **`dispatching-parallel-agents`** - Parallel task orchestration
-- **`test-fixing`** - Systematic test failure resolution
-- **`using-git-worktrees`** - Isolated workspace creation for feature work
+- **`project-tracker`** ⭐ - Persistent project history journal with tracker file maintenance protocol
+- **`pipeline-evolution`** ⭐ - Self-improving pipeline system that harvests insights and promotes them to control plane
+- **`verification-before-completion`** ⭐ - Evidence-before-claims protocol with "Iron Law" of verification
+- **`executing-plans`** ⭐ - Batch execution with checkpoints and architect review
+- **`writing-plans`** ⭐ - Comprehensive implementation plans with TDD focus
+- **`feature-design-assistant`** ⭐ - Natural collaborative dialogue for feature planning
+- **`git-commit`** ⭐ - Conventional commit message automation
+- **`dispatching-parallel-agents`** ⭐ - Parallel task orchestration
+- **`test-fixing`** ⭐ - Systematic test failure resolution
+- **`using-git-worktrees`** ⭐ - Isolated workspace creation for feature work
 
 #### Problem-Solving Skills
 
-- **`when-stuck`** - Dispatcher to problem-solving techniques based on stuck type
-- **`collision-zone-thinking`** - Force unrelated concepts together for emergent properties
-- **`inversion-exercise`** - Flip core assumptions to reveal hidden constraints
-- **`meta-pattern-recognition`** - Spot patterns appearing across 3+ domains
-- **`scale-game`** - Test at extremes (1000x bigger/smaller) to expose fundamental truths
-- **`simplification-cascades`** - Find one insight that eliminates multiple components
+- **`when-stuck`** ⭐ - Dispatcher to problem-solving techniques based on stuck type
+- **`collision-zone-thinking`** ⭐ - Force unrelated concepts together for emergent properties
+- **`inversion-exercise`** ⭐ - Flip core assumptions to reveal hidden constraints
+- **`meta-pattern-recognition`** ⭐ - Spot patterns appearing across 3+ domains
+- **`scale-game`** ⭐ - Test at extremes (1000x bigger/smaller) to expose fundamental truths
+- **`simplification-cascades`** ⭐ - Find one insight that eliminates multiple components
 
 #### Development Skills
 
-- **`create-plan`** - Concise plan creation for coding tasks
-- **`clean-code`** - Pragmatic coding standards without over-engineering
-- **`code-review-checklist`** - Comprehensive review checklist
-- **`database-design`** - Database design principles and decision-making
-- **`software-architecture`** - Quality-focused architecture guide
-- **`test-driven-development`** - TDD workflow and patterns
-- **`testing-patterns`** - Jest testing patterns and factory functions
+- **`create-plan`** ⭐ - Concise plan creation for coding tasks
+- **`clean-code`** ⭐ - Pragmatic coding standards without over-engineering
+- **`code-review-checklist`** ⭐ - Comprehensive review checklist
+- **`database-design`** ⭐ - Database design principles and decision-making
+- **`software-architecture`** ⭐ - Quality-focused architecture guide
+- **`test-driven-development`** ⭐ - TDD workflow and patterns
+- **`testing-patterns`** ⭐ - Jest testing patterns and factory functions
 
 #### Specialized Skills
 
-- **`holistic-bug-analysis`** - Multi-level bug analysis (symptom vs root cause)
-- **`holistic-testing`** - Behavioral testing with fixture files
-- **`codebase-maintenance`** - Systematic codebase cleanup
-- **`db-cheatsheet`** - Database schema reference
-- **`subagent-driven-development`** - Implementation with independent tasks
+- **`holistic-bug-analysis`** ⭐ - Multi-level bug analysis (symptom vs root cause)
+- **`holistic-testing`** ⭐ - Behavioral testing with fixture files
+- **`codebase-maintenance`** ⭐ - Systematic codebase cleanup
+- **`db-cheatsheet`** ⭐ - Database schema reference
+- **`subagent-driven-development`** ⭐ - Implementation with independent tasks
+
+### Customized (Adapted from Community Sources)
+
+These skills may have originated from common Cursor/Claude skill repositories but have been modified or extended for this project:
+
+- **`brainstorming`** 🔧 - Idea-to-design dialogue (customized with YAGNI enforcement and git-worktree integration)
+- **`using-superpowers`** 🔧 - Skill discovery protocol (appears in community, may be customized)
+
+**Legend**:
+- ⭐ = Fully custom (original work)
+- 🔧 = Customized (adapted from community sources)
 
 See [docs/CUSTOM_SKILLS.md](docs/CUSTOM_SKILLS.md) for detailed documentation of each custom skill and rule.
 
@@ -197,6 +208,7 @@ Source: Supabase team
 #### Specialized
 - `qa-test-planner`, `gemini`, `gepetto`, `jira`, `datadog-cli`
 - `geo-fundamentals`, `network-101`, `busybox-on-windows`
+- `using-superpowers` - Skill discovery protocol (likely Anthropic/community source, needs attribution research)
 
 ## License Compliance
 

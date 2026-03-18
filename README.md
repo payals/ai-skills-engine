@@ -5,8 +5,10 @@
 Transform your AI coding assistant with enforced expertise, automatic skill discovery, and multi-agent orchestration.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/payals/ai-skills-engine)](https://github.com/payals/ai-skills-engine/releases)
 [![Skills](https://img.shields.io/badge/Skills-280%2B-green.svg)](dot_cursor/skills/INDEX.md)
 [![Rules](https://img.shields.io/badge/Rules-8-orange.svg)](docs/RULES.md)
+[![Custom](https://img.shields.io/badge/Custom%20Skills-40%2B-purple.svg)](docs/CUSTOM_SKILLS.md)
 
 ---
 
@@ -366,16 +368,18 @@ All rules in `.cursor/rules/` are custom creations:
 
 ### Custom Skills (~40-50 skills)
 
-Key custom skills include:
+**Fully custom skills** ⭐ include:
 
 - **project-tracker** - Persistent project history journal
 - **pipeline-evolution** - Self-improving pipeline system
 - **verification-before-completion** - Evidence-before-claims protocol
 - **executing-plans** - Batch execution with checkpoints
 - **writing-plans** - Comprehensive implementation plans
-- **brainstorming** - Idea-to-design dialogue
-- **using-superpowers** - Skill discovery protocol
 - **Problem-solving suite** - when-stuck, collision-zone-thinking, inversion-exercise, meta-pattern-recognition, scale-game, simplification-cascades
+
+**Customized skills** 🔧 (adapted from community):
+
+- **brainstorming** - Enhanced with YAGNI enforcement and git-worktree integration
 
 **[Full custom skills documentation →](docs/CUSTOM_SKILLS.md)**
 
@@ -474,7 +478,8 @@ This project combines original custom work with skills sourced from the broader 
 ### Custom Work (Apache 2.0)
 
 - **8 custom rules** - All rules in `.cursor/rules/` are original creations
-- **~40-50 custom skills** - Including project-tracker, pipeline-evolution, verification-before-completion, problem-solving suite, and more
+- **~30-40 fully custom skills** ⭐ - Including project-tracker, pipeline-evolution, verification-before-completion, problem-solving suite, and more
+- **~5-10 customized skills** 🔧 - Community skills adapted/extended for this project (e.g., brainstorming with YAGNI enforcement)
 - **cursor-prompt-queue** - Batch sequential prompts workflow
 
 ### Sourced Skills

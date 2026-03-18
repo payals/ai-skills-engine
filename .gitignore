@@ -2,6 +2,7 @@
 __pycache__/
 *.py[codz]
 *$py.class
+PRE_RELEASE_CHECKLIST.md
 .cursor/
 
 # C extensions

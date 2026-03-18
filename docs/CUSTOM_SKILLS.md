@@ -1,6 +1,10 @@
 # Custom Skills & Rules Documentation
 
-This document provides detailed explanations of all custom skills and rules created specifically for the AI Skills Engine. These represent original innovations in AI agent orchestration, workflow management, and quality enforcement.
+This document provides detailed explanations of all custom and customized skills and rules for the AI Skills Engine. These represent original innovations in AI agent orchestration, workflow management, and quality enforcement.
+
+**Legend**:
+- ⭐ = Fully custom (original work)
+- 🔧 = Customized (adapted from community sources with modifications)
 
 ## Table of Contents
 
@@ -212,33 +216,22 @@ Workflow skills define **HOW** to execute complex processes. They provide step-b
 
 **Key innovation**: Granularity requirement (2-5 min tasks) forces concrete thinking.
 
-### brainstorming
+### brainstorming 🔧
 
 **Purpose**: Idea-to-design dialogue before implementation.
+
+**Status**: Customized from community source
 
 **What it does**:
 - One question at a time (no walls of text)
 - 200-300 word sections with validation
 - YAGNI enforcement (You Aren't Gonna Need It)
 - Clarify requirements before proposing solutions
+- Integration with git-worktrees for isolated implementation
 
 **Why it exists**: Jumping to implementation without understanding requirements leads to wrong solutions.
 
-**Key innovation**: Mandatory brainstorming before creative work prevents premature implementation.
-
-### using-superpowers
-
-**Purpose**: Skill discovery protocol - find and use relevant skills.
-
-**What it does**:
-- Task-to-skill mapping table
-- Red flag rationalization prevention ("I'll just...")
-- Mandatory skill checking before responses
-- Process skills first (brainstorming, when-stuck) then implementation
-
-**Why it exists**: Skills are useless if agents don't know when to use them.
-
-**Key innovation**: The mapping table makes skill discovery systematic, not random.
+**Customizations**: Enhanced with YAGNI enforcement, git-worktree integration, and structured validation process.
 
 ### feature-design-assistant
 
