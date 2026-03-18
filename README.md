@@ -52,7 +52,7 @@ This repository contains a pre-configured `.cursor` directory with:
 
 ## Quick Start
 
-### Installation (2 minutes)
+### Installation 
 
 ```bash
 # 1. Clone this repository
