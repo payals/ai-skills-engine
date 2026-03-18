@@ -1,12 +1,32 @@
 # AI Skills Engine
 
-> **Supercharge your AI coding assistant with 280+ expert skills and intelligent automation**
+> **A comprehensive collection of 280+ expert skills and intelligent automation rules for Cursor IDE**
 
-A comprehensive, battle-tested collection of AI agent skills and rules for Cursor IDE (and other AI code editors) that transforms your development workflow with context-aware, expert-level assistance.
+Transform your AI coding assistant with enforced expertise, automatic skill discovery, and multi-agent orchestration.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/Skills-280%2B-green.svg)](dot_cursor/skills/INDEX.md)
-[![Rules](https://img.shields.io/badge/Rules-7-orange.svg)](docs/RULES.md)
+[![Rules](https://img.shields.io/badge/Rules-8-orange.svg)](docs/RULES.md)
+
+---
+
+## Table of Contents
+
+- [What is This?](#-what-is-this)
+- [Why Does This Exist?](#-why-does-this-exist)
+- [How It Works](#-how-it-works)
+- [Quick Start](#-quick-start)
+- [Quick Examples](#-quick-examples)
+- [Skill Categories](#-skill-categories)
+- [Use Cases](#-use-cases)
+- [Documentation](#-documentation)
+- [Advanced Features](#-advanced-features)
+- [Custom Skills & Workflows](#-custom-skills--workflows)
+- [Using with Other IDEs](#-using-with-other-ides)
+- [Contributing](#-contributing)
+- [Attributions](#-attributions)
+- [Troubleshooting](#-troubleshooting)
+- [License](#-license)
 
 ---
 
@@ -19,8 +39,32 @@ This repository contains a pre-configured `.cursor` directory with:
 - **Skills Index**: Searchable catalog that helps AI find and apply the right expertise automatically
 - **Persistent Memory**: Napkin system that learns from mistakes and user preferences across sessions
 - **Multi-Agent Orchestration**: Coordinator mode for complex tasks with parallel subagent dispatch
+- **Project Tracker**: Persistent history journal for tracking completed work across sessions
+- **Prompt Queue**: Batch sequential prompts with dynamic variable passing ([cursor-prompt-queue](https://github.com/payals/cursor-prompt-queue))
 
 **The key differentiator**: The **masterrule** ensures skills are **automatically scanned and applied** in every session. Your AI assistant doesn't just have access to skills—it's **required** to use them.
+
+---
+
+## 🤔 Why Does This Exist?
+
+**The Problem:** In default Cursor, skills are optional files that *might* get used. There's no enforcement, no automatic discovery, and no proof of which expertise was applied.
+
+**The Solution:** AI Skills Engine adds:
+
+1. **Mandatory Skill Scanning** - `masterrule.mdc` with `alwaysApply: true` enforces skill usage before every response
+2. **Automatic Discovery** - `INDEX.md` maps keywords to skills, so the right expertise is found automatically
+3. **Proof of Expertise** - Every response shows which skills were applied via "Skill Proof" header
+4. **Structured Orchestration** - Coordinator mode provides rules for multi-agent tasks (conflict prevention, reviews, testing)
+
+| Feature | Default Cursor | AI Skills Engine |
+|---------|---------------|------------------|
+| Skill Usage | Optional, manual | Mandatory, automatic |
+| Discovery | Manual reference | Keyword matching |
+| Proof | None | Skill Proof header |
+| Multi-Agent | Ad-hoc | Structured orchestration |
+
+**[Read detailed comparison →](docs/WHY.md)**
 
 ---
 
@@ -303,6 +347,78 @@ Every plan is automatically validated before presentation:
 
 ---
 
+## 🎨 Custom Skills & Workflows
+
+This project includes significant original work alongside community-sourced skills:
+
+### Custom Rules (8 rules)
+
+All rules in `.cursor/rules/` are custom creations:
+
+- **masterrule** - Mandatory skill scanning with "Skill Proof" enforcement
+- **coordinator-mode** - Multi-agent orchestration with 6-phase protocol
+- **auto-battle-test-plans** - Automatic plan validation before presentation
+- **anti-hang-subagents** - Context exhaustion prevention
+- **tracker-maintenance** - Project history protocol
+- **auto-execute-plans** - Plan execution trigger
+- **pipeline-execution** - RFP pipeline mode
+- **auto-docs-audit** - Documentation maintenance
+
+### Custom Skills (~40-50 skills)
+
+Key custom skills include:
+
+- **project-tracker** - Persistent project history journal
+- **pipeline-evolution** - Self-improving pipeline system
+- **verification-before-completion** - Evidence-before-claims protocol
+- **executing-plans** - Batch execution with checkpoints
+- **writing-plans** - Comprehensive implementation plans
+- **brainstorming** - Idea-to-design dialogue
+- **using-superpowers** - Skill discovery protocol
+- **Problem-solving suite** - when-stuck, collision-zone-thinking, inversion-exercise, meta-pattern-recognition, scale-game, simplification-cascades
+
+**[Full custom skills documentation →](docs/CUSTOM_SKILLS.md)**
+
+### Custom Workflows
+
+- **[cursor-prompt-queue](https://github.com/payals/cursor-prompt-queue)** - Batch sequential prompts with dynamic variable passing between steps. Fresh context per step without context rot.
+
+### Project Tracker
+
+The project tracker system provides persistent history across sessions:
+
+- **What**: Chronological journal of completed work (features, bug fixes, refactors, docs)
+- **When to use**: After meaningful work completion; before substantial work if history matters
+- **Format**: Date-based entries with purpose, changes, files, verification, outcome
+- **Integration**: Enforced by tracker-maintenance rule, guided by project-tracker skill
+
+**Example entry**:
+```markdown
+## [2026-03-18] - Feature: User Authentication System
+
+**Purpose**: Implement secure user login and session management
+
+**Changes**:
+- Added JWT-based authentication middleware
+- Created user login/logout endpoints
+- Implemented session token refresh mechanism
+
+**Files Created**:
+- src/auth/middleware.ts
+- src/auth/jwt.ts
+- tests/auth/auth.test.ts
+
+**Verification**:
+- All auth tests passing (15/15)
+- Manual testing: login, logout, token refresh flows
+
+**Outcome**: Authentication system fully functional
+```
+
+**[Learn more about the tracker →](docs/CUSTOM_SKILLS.md#project-tracker)**
+
+---
+
 ## 🔄 Using with Other IDEs
 
 While optimized for Cursor, skills work with:
@@ -348,6 +464,46 @@ Contributions are welcome! To add a new skill:
 5. Submit a pull request
 
 **[Skill creation guide →](dot_cursor/skills/development/writing-skills/SKILL.md)**
+
+---
+
+## 📜 Attributions
+
+This project combines original custom work with skills sourced from the broader Cursor/Claude community.
+
+### Custom Work (Apache 2.0)
+
+- **8 custom rules** - All rules in `.cursor/rules/` are original creations
+- **~40-50 custom skills** - Including project-tracker, pipeline-evolution, verification-before-completion, problem-solving suite, and more
+- **cursor-prompt-queue** - Batch sequential prompts workflow
+
+### Sourced Skills
+
+We're grateful to these sources for their contributions:
+
+- **[vibeship-spawner-skills](https://github.com/vibeship/spawner-skills)** (Apache 2.0) - AI research and agent development skills (~15-20 skills)
+- **Orchestra Research** - Comprehensive AI/ML research skills (~80-90 skills covering distributed training, fine-tuning, inference, post-training, optimization, multimodal, evaluation, MLOps, RAG, safety, interpretability)
+- **Anthropic** - Document processing skills (docx, pptx, pdf, xlsx)
+- **Vercel Engineering** (MIT) - react-best-practices
+- **Supabase** - supabase-postgres-best-practices
+- **Microsoft GitHub** - github-workflow-automation
+- **Community** - Various development, web, workflow automation, and utility skills
+
+**[Full attributions and license compliance →](ATTRIBUTIONS.md)**
+
+**[Custom skills detailed documentation →](docs/CUSTOM_SKILLS.md)**
+
+### Acknowledgments
+
+Special thanks to:
+- **Anthropic** - For Claude and document processing skills
+- **Microsoft** - For Cursor IDE and GitHub integration skills
+- **vibeship** - For spawner-skills collection
+- **Orchestra Research** - For comprehensive AI/ML research skills
+- **Vercel, Supabase, and the broader community** - For domain-specific expertise
+- **blader** - For the napkin persistent memory pattern
+
+This project stands on the shoulders of giants. We're grateful to the entire Cursor/Claude community for building and sharing these skills.
 
 ---
 
@@ -400,12 +556,4 @@ Apache License 2.0 - See [LICENSE](LICENSE) file for details.
 
 ---
 
-## ⭐ Star History
-
-If you find this useful, please star the repository! It helps others discover these skills.
-
----
-
-**Made with ❤️ for the Cursor IDE and AI coding community**
-
-*Transform your AI assistant from helpful to expert-level*
+**Built for the Cursor IDE and AI coding community**

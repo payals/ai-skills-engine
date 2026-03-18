@@ -168,6 +168,30 @@ The rules system in `.cursor/rules/` provides persistent, always-applied instruc
 
 ---
 
+### 8. Tracker Maintenance (`tracker-maintenance.mdc`)
+
+**Purpose**: Enforces persistent project history tracking across sessions.
+
+**Status**: `alwaysApply: true` - Active in every session
+
+**What it does**:
+- Enforces reading tracker before substantial work when history matters
+- Enforces updating tracker after meaningful completed work
+- Defines when to read (multi-file features, conventions, avoiding duplicates)
+- Defines when to update (features, bug fixes, refactors, docs milestones)
+- Specifies format: `## [YYYY-MM-DD] - Title` with purpose, changes, files, verification, outcome
+- Integrates with project-tracker skill for detailed guidance
+
+**Default tracker locations**: `TRACKER.md`, `docs/tracker.md`, `docs/TRACKER.md`
+
+**Why it matters**: Without persistent history, each session starts from zero. The tracker provides project memory, helping avoid duplicate work and maintain context about what was built and why.
+
+**Anti-hang safeguard**: Never updates tracker as sole tool call (prevents IDE hang).
+
+**[Learn more about the tracker →](CUSTOM_SKILLS.md#project-tracker)**
+
+---
+
 ## How Rules Work Together
 
 ```
@@ -180,10 +204,12 @@ Skills Index → Load relevant skills
 Coordinator Mode (classifies task complexity)
     ↓
     ├─→ SIMPLE: Direct action
+    │   └─→ Tracker Maintenance (read/update history)
     │
     └─→ COORDINATED:
         ├─→ Auto Battle-Test Plans (validates plans)
         ├─→ Anti-Hang Safeguards (prevents hangs)
+        ├─→ Tracker Maintenance (read/update history)
         └─→ Subagent dispatch with reviews
 ```
 
