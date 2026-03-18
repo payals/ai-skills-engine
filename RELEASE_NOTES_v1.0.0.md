@@ -1,4 +1,4 @@
-# Release v1.0.0 - Initial Release: 280+ Skills with Attribution
+# Release v1.0.0 - AI Skills Engine: Enforced Expertise for Cursor IDE
 
 ## 🎉 What's New
 
@@ -36,7 +36,7 @@
   - Resumable across sessions
 
 ## 📊 Stats
-- **280+ Skills** across 12 categories
+- **227 Skills** across 10 categories
 - **8 Custom Rules** (all original)
 - **~30-40 Fully Custom Skills** ⭐ (original work)
 - **~5-10 Customized Skills** 🔧 (adapted from community)

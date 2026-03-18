@@ -1,92 +1,56 @@
 # AI Skills Engine
 
-> **A comprehensive collection of 280+ expert skills and intelligent automation rules for Cursor IDE**
+> **A comprehensive collection of 227 expert skills and intelligent automation rules for Cursor IDE**
 
 Transform your AI coding assistant with enforced expertise, automatic skill discovery, and multi-agent orchestration.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Release](https://img.shields.io/github/v/release/payals/ai-skills-engine)](https://github.com/payals/ai-skills-engine/releases)
-[![Skills](https://img.shields.io/badge/Skills-280%2B-green.svg)](dot_cursor/skills/INDEX.md)
+[![Skills](https://img.shields.io/badge/Skills-227-green.svg)](dot_cursor/skills/INDEX.md)
 [![Rules](https://img.shields.io/badge/Rules-8-orange.svg)](docs/RULES.md)
-[![Custom](https://img.shields.io/badge/Custom%20Skills-40%2B-purple.svg)](docs/CUSTOM_SKILLS.md)
+[![Self-Evolution](https://img.shields.io/badge/Self--Evolution-Enabled-brightgreen.svg)](docs/SELF_EVOLUTION.md)
+[![Custom](https://img.shields.io/badge/Custom%20Skills-29-purple.svg)](docs/CUSTOM_SKILLS.md)
 
 ---
 
 ## Table of Contents
 
-- [What is This?](#-what-is-this)
-- [Why Does This Exist?](#-why-does-this-exist)
-- [How It Works](#-how-it-works)
-- [Quick Start](#-quick-start)
-- [Quick Examples](#-quick-examples)
-- [Skill Categories](#-skill-categories)
-- [Use Cases](#-use-cases)
-- [Documentation](#-documentation)
-- [Advanced Features](#-advanced-features)
-- [Custom Skills & Workflows](#-custom-skills--workflows)
-- [Using with Other IDEs](#-using-with-other-ides)
-- [Contributing](#-contributing)
-- [Attributions](#-attributions)
-- [Troubleshooting](#-troubleshooting)
-- [License](#-license)
+- [Overview](#overview)
+- [Quick Start](#quick-start)
+- [Examples](#examples)
+- [Features & Benefits](#features--benefits)
+- [Architecture](#architecture)
+- [Skill Categories](#skill-categories)
+- [Use Cases](#use-cases)
+- [Documentation](#documentation)
+- [Advanced Features](#advanced-features)
+- [Custom Skills & Workflows](#custom-skills--workflows)
+- [Using with Other IDEs](#using-with-other-ides)
+- [Contributing](#contributing)
+- [Attributions](#attributions)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
 ---
 
-## 🎯 What is This?
+## Overview
 
 This repository contains a pre-configured `.cursor` directory with:
 
-- **280+ Skills**: Specialized AI capabilities across development, AI/ML, databases, document processing, and more
+- **227 Skills**: Specialized AI capabilities across development, AI/ML, databases, document processing, and more
 - **Intelligent Rules System**: Automatic skill discovery and application via the masterrule
 - **Skills Index**: Searchable catalog that helps AI find and apply the right expertise automatically
 - **Persistent Memory**: Napkin system that learns from mistakes and user preferences across sessions
 - **Multi-Agent Orchestration**: Coordinator mode for complex tasks with parallel subagent dispatch
 - **Project Tracker**: Persistent history journal for tracking completed work across sessions
+- **Self-Evolution System**: Learns from napkin and tracker to automatically improve rules, skills, and workflows
 - **Prompt Queue**: Batch sequential prompts with dynamic variable passing ([cursor-prompt-queue](https://github.com/payals/cursor-prompt-queue))
 
 **The key differentiator**: The **masterrule** ensures skills are **automatically scanned and applied** in every session. Your AI assistant doesn't just have access to skills—it's **required** to use them.
 
 ---
 
-## 🤔 Why Does This Exist?
-
-**The Problem:** In default Cursor, skills are optional files that *might* get used. There's no enforcement, no automatic discovery, and no proof of which expertise was applied.
-
-**The Solution:** AI Skills Engine adds:
-
-1. **Mandatory Skill Scanning** - `masterrule.mdc` with `alwaysApply: true` enforces skill usage before every response
-2. **Automatic Discovery** - `INDEX.md` maps keywords to skills, so the right expertise is found automatically
-3. **Proof of Expertise** - Every response shows which skills were applied via "Skill Proof" header
-4. **Structured Orchestration** - Coordinator mode provides rules for multi-agent tasks (conflict prevention, reviews, testing)
-
-| Feature | Default Cursor | AI Skills Engine |
-|---------|---------------|------------------|
-| Skill Usage | Optional, manual | Mandatory, automatic |
-| Discovery | Manual reference | Keyword matching |
-| Proof | None | Skill Proof header |
-| Multi-Agent | Ad-hoc | Structured orchestration |
-
-**[Read detailed comparison →](docs/WHY.md)**
-
----
-
-## 📊 How It Works
-
-![Architecture Diagram](docs/architecture-diagram.png)
-
-The system uses an always-applied rule (masterrule) that enforces a mandatory skill scanning protocol:
-
-1. **User makes a request** → Masterrule intercepts
-2. **Reads Skills Index** → Matches keywords to relevant skills
-3. **Loads SKILL.md files** → Applies expert knowledge
-4. **Coordinator classifies** → Simple (direct) or Complex (subagents)
-5. **Delivers response** → With skill proof showing what was applied
-
-**[Learn more about the architecture →](docs/RULES.md)**
-
----
-
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation (2 minutes)
 
@@ -104,6 +68,8 @@ cp -r /path/to/ai-skills-engine/dot_cursor .cursor
 
 That's it! The masterrule will automatically start using skills in your next session.
 
+**Note**: This includes the self-evolution system (`.cursor/evolution/`) which is disabled by default. See [Advanced Features](#-advanced-features) to learn about enabling it.
+
 ### Verify Installation
 
 Open Cursor and ask: *"What skills are available?"*
@@ -112,7 +78,7 @@ The AI should read `.cursor/skills/INDEX.md` and list available skills with a "S
 
 ---
 
-## 💡 Quick Examples
+## Examples
 
 ### Example 1: Docker Optimization
 
@@ -150,19 +116,56 @@ AI: ## Skill Proof
 You: "I want to add user authentication"
 
 AI: ## Skill Proof
-    Skills Used: brainstorming (process skill first!)
+    Skills Used: brainstorming, create-plan, senior-backend
     
-    [Asks clarifying questions]
-    - Session vs JWT?
-    - OAuth providers?
-    - Password requirements?
-    
-    [Then loads senior-backend for implementation]
+    [Structured approach]
+    1. Explores requirements (OAuth? JWT? Session-based?)
+    2. Creates implementation plan
+    3. Suggests security best practices
+    4. Provides code scaffolding
 ```
 
 ---
 
-## 📚 Skill Categories
+## Features & Benefits
+
+**The Problem:** In default Cursor, skills are optional files that *might* get used. There's no enforcement, no automatic discovery, and no proof of which expertise was applied.
+
+**The Solution:** AI Skills Engine adds:
+
+1. **Mandatory Skill Scanning** - `masterrule.mdc` with `alwaysApply: true` enforces skill usage before every response
+2. **Automatic Discovery** - `INDEX.md` maps keywords to skills, so the right expertise is found automatically
+3. **Proof of Expertise** - Every response shows which skills were applied via "Skill Proof" header
+4. **Structured Orchestration** - Coordinator mode provides rules for multi-agent tasks (conflict prevention, reviews, testing)
+
+| Feature | Default Cursor | AI Skills Engine |
+|---------|---------------|------------------|
+| Skill Usage | Optional, manual | Mandatory, automatic |
+| Discovery | Manual reference | Keyword matching |
+| Proof | None | Skill Proof header |
+| Multi-Agent | Ad-hoc | Structured orchestration |
+
+**[Read detailed comparison →](docs/WHY.md)**
+
+---
+
+## Architecture
+
+![Architecture Diagram](docs/architecture-diagram.png)
+
+The system uses an always-applied rule (masterrule) that enforces a mandatory skill scanning protocol:
+
+1. **User makes a request** → Masterrule intercepts
+2. **Reads Skills Index** → Matches keywords to relevant skills
+3. **Loads SKILL.md files** → Applies expert knowledge
+4. **Coordinator classifies** → Simple (direct) or Complex (subagents)
+5. **Delivers response** → With skill proof showing what was applied
+
+**[Learn more about the architecture →](docs/RULES.md)**
+
+---
+
+## Skill Categories
 
 <details>
 <summary><b>Development (80+ skills)</b> - Core coding, testing, planning</summary>
@@ -256,7 +259,7 @@ AI: ## Skill Proof
 
 ---
 
-## 🎓 Use Cases
+## Use Cases
 
 ### Perfect For:
 
@@ -279,7 +282,7 @@ AI: ## Skill Proof
 
 ---
 
-## 📖 Documentation
+## Documentation
 
 ### Core Documentation
 
@@ -294,7 +297,7 @@ AI: ## Skill Proof
 
 ---
 
-## 🔧 Advanced Features
+## Advanced Features
 
 ### 1. Masterrule - Mandatory Skill Scanning
 
@@ -347,9 +350,27 @@ Every plan is automatically validated before presentation:
 - Notes what worked well
 - Compounds learning over time
 
+### 5. Self-Evolution System (Advanced)
+
+**Status**: Disabled by default - opt-in feature for advanced users
+
+`.cursor/evolution/` continuously improves the system:
+
+- Analyzes patterns in napkin and tracker
+- Generates improvement proposals (rules, skills, workflows)
+- Tracks effectiveness with automatic rollback
+- Full safety controls (user approval, backups, monitoring)
+
+**Quick Enable**:
+```bash
+./.cursor/evolution/scripts/enable.sh
+```
+
+**[Learn more about self-evolution →](docs/SELF_EVOLUTION.md)**
+
 ---
 
-## 🎨 Custom Skills & Workflows
+## Custom Skills & Workflows
 
 This project includes significant original work alongside community-sourced skills:
 
@@ -423,7 +444,7 @@ The project tracker system provides persistent history across sessions:
 
 ---
 
-## 🔄 Using with Other IDEs
+## Using with Other IDEs
 
 While optimized for Cursor, skills work with:
 
@@ -457,7 +478,7 @@ EOF
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! To add a new skill:
 
@@ -471,7 +492,7 @@ Contributions are welcome! To add a new skill:
 
 ---
 
-## 📜 Attributions
+## Attributions
 
 This project combines original custom work with skills sourced from the broader Cursor/Claude community.
 
@@ -512,7 +533,7 @@ This project stands on the shoulders of giants. We're grateful to the entire Cur
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Skills not loading?
 
@@ -537,13 +558,13 @@ This project stands on the shoulders of giants. We're grateful to the entire Cur
 
 ---
 
-## 📄 License
+## License
 
 Apache License 2.0 - See [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Inspired by the [Cursor IDE](https://cursor.sh) agent system
 - Napkin system adapted from [blader/napkin](https://github.com/blader/napkin)
@@ -552,7 +573,7 @@ Apache License 2.0 - See [LICENSE](LICENSE) file for details.
 
 ---
 
-## 📞 Support & Community
+## Support & Community
 
 - **Issues**: [Open an issue](https://github.com/yourusername/ai-skills-engine/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/yourusername/ai-skills-engine/discussions)

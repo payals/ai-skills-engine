@@ -5,6 +5,26 @@ All notable changes to the AI Skills Engine project will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+#### Self-Evolution System
+- **Automated improvement workflow** that learns from napkin and tracker to evolve rules, skills, and workflows
+- **Pattern recognition engine** (`analyze.py`) - Detects repeated mistakes, successful approaches, and workflow patterns
+- **Proposal generation** with impact analysis and scoring (Value, Risk, Effort, Confidence)
+- **Safe implementation** with automatic backups and effectiveness tracking
+- **Rollback support** for failed changes
+- **Configuration system** (`config.json`) with customizable thresholds and settings
+- **Management scripts**:
+  - `enable.sh` / `disable.sh` - System activation
+  - `analyze.py` - Pattern analysis
+  - `report.py` - Status and effectiveness reports
+- **Git hook example** (`post-commit.sample`) for automatic analysis
+- **Comprehensive documentation** in `docs/SELF_EVOLUTION.md`
+- **Template files** for proposals and tracking
+- **Disabled by default** - Opt-in system with full safety controls
+
 ## [1.0.0] - 2026-03-18
 
 ### Added
@@ -12,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Initial Release - Comprehensive Skills System
 - Transform minimal README into full-featured documentation
 - Add architecture overview, quick start guide, and examples
-- Document 280+ skills across 12 categories
+- Document 227 skills across 10 categories
 - Include installation instructions for Cursor and other IDEs
 - Add troubleshooting, contributing guidelines, and use cases
 - Add untracked `docs/` and `dot_cursor/` directories with skills and rules
@@ -84,7 +104,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Version History
 
 - **v1.0.0** (2026-03-18) - Initial Release
-  - Comprehensive skills system with 280+ skills
+  - Comprehensive skills system with 227 skills
   - 8 custom rules for AI agent orchestration
   - ~30-40 fully custom skills + ~5-10 customized skills
   - Full attribution and documentation

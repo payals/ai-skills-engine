@@ -1,0 +1,33 @@
+# Self-Evolution System .gitignore
+
+# Generated proposals (may contain sensitive project details)
+proposals/*.md
+
+# Backups (can be large and project-specific)
+backups/*/
+
+# Tracking files (project-specific monitoring data)
+tracking/*.md
+
+# Reports (generated on-demand)
+reports/*.md
+
+# Keep directory structure
+!proposals/.gitkeep
+!backups/.gitkeep
+!tracking/.gitkeep
+!reports/.gitkeep
+
+# Keep example/template files
+!proposals/TEMPLATE.md
+!tracking/TEMPLATE.md
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Temporary files
+*.tmp
+*.log
+.DS_Store

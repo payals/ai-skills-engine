@@ -1,0 +1,39 @@
+{
+  "enabled": false,
+  "mode": "passive",
+  "analysis_frequency": "after_substantial_work",
+  "min_pattern_frequency": 3,
+  "min_value_score": 6,
+  "max_risk_score": 4,
+  "min_confidence_score": 7,
+  "monitoring_period_days": 7,
+  "auto_implement": false,
+  "backup_before_changes": true,
+  "notify_on_proposals": true,
+  "excluded_files": [
+    ".cursor/napkin.md",
+    "TRACKER.md",
+    "docs/tracker.md"
+  ],
+  "pattern_lookback_days": 30,
+  "require_user_approval": true,
+  "analysis_triggers": {
+    "tracker_min_lines": 10,
+    "napkin_min_mistakes": 2,
+    "napkin_min_corrections": 1,
+    "napkin_min_what_worked": 2,
+    "days_between_reviews": 7
+  },
+  "scoring_thresholds": {
+    "value_min": 6,
+    "risk_max": 4,
+    "confidence_min": 7,
+    "masterrule_confidence_min": 9
+  },
+  "notification_preferences": {
+    "notify_on_pattern_detection": true,
+    "notify_on_proposal_ready": true,
+    "notify_on_implementation": true,
+    "notify_on_effectiveness_review": true
+  }
+}

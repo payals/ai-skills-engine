@@ -1,0 +1,47 @@
+#!/bin/bash
+# Git post-commit hook for self-evolution system
+# 
+# This hook triggers pattern analysis after commits that modify napkin.md or TRACKER.md
+# 
+# To enable:
+#   1. Copy to .git/hooks/post-commit
+#   2. Make executable: chmod +x .git/hooks/post-commit
+#   3. Ensure self-evolution system is enabled
+
+# Get the project root (assumes .git is in project root)
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+EVOLUTION_DIR="$PROJECT_ROOT/.cursor/evolution"
+CONFIG_FILE="$EVOLUTION_DIR/config.json"
+
+# Check if evolution system is enabled
+if [ ! -f "$CONFIG_FILE" ]; then
+    exit 0
+fi
+
+ENABLED=$(python3 -c "import json; print(json.load(open('$CONFIG_FILE')).get('enabled', False))" 2>/dev/null)
+if [ "$ENABLED" != "True" ]; then
+    exit 0
+fi
+
+# Check if napkin.md or TRACKER.md were modified in this commit
+MODIFIED_FILES=$(git diff-tree --no-commit-id --name-only -r HEAD)
+
+if echo "$MODIFIED_FILES" | grep -q "napkin.md\|TRACKER.md"; then
+    echo ""
+    echo "🧬 Self-evolution: Napkin or Tracker modified, triggering analysis..."
+    
+    # Run analysis in background to avoid blocking commit
+    (
+        cd "$PROJECT_ROOT"
+        python3 "$EVOLUTION_DIR/scripts/analyze.py" "$PROJECT_ROOT" > /dev/null 2>&1
+        
+        # Check if new patterns detected
+        LATEST_REPORT=$(ls -t "$EVOLUTION_DIR/reports/analysis-"*.md 2>/dev/null | head -1)
+        if [ -n "$LATEST_REPORT" ]; then
+            echo "📊 Analysis complete. Report: $LATEST_REPORT"
+            echo "💡 Run 'cat $LATEST_REPORT' to view patterns"
+        fi
+    ) &
+fi
+
+exit 0

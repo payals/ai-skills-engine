@@ -1,0 +1,386 @@
+---
+name: self-evolution
+description: Self-improvement workflow that learns from napkin and tracker to evolve rules, skills, and workflows
+globs: []
+alwaysApply: false
+---
+
+# Self-Evolution Protocol
+
+**STATUS: DISABLED BY DEFAULT** - Enable by setting `alwaysApply: true` in frontmatter
+
+This rule implements a self-improving system that learns from napkin entries and tracker history to evolve rules, skills, and workflows over time.
+
+## When This Rule Activates
+
+This rule activates in two modes:
+
+### 1. Passive Analysis (when enabled)
+Runs automatically after completing substantial work:
+- After tracker updates (piggyback on tracker write)
+- After napkin updates (piggyback on napkin write)
+- When user explicitly says "evolve", "self-improve", or "analyze patterns"
+
+### 2. Active Evolution (manual trigger)
+User explicitly requests:
+- "Run self-evolution analysis"
+- "What patterns do you see in napkin/tracker?"
+- "Suggest improvements to rules/skills"
+- "Evolve the system"
+
+## Evolution Process
+
+### Phase 1: Pattern Recognition
+
+**Inputs:**
+- `.cursor/napkin.md` (mistakes, corrections, surprises, preferences, what worked)
+- `TRACKER.md` or `docs/tracker.md` (completed work history)
+- `.cursor/rules/*.mdc` (current rules)
+- `.cursor/skills/INDEX.md` (skill catalog)
+
+**Analysis:**
+1. **Frequency analysis**: Which mistakes repeat? Which approaches consistently work?
+2. **Temporal patterns**: Are recent entries showing new patterns vs older ones?
+3. **Category clustering**: Do mistakes cluster around specific domains (Docker, testing, DB, etc.)?
+4. **Gap detection**: What problems appear in napkin but have no corresponding skill/rule?
+5. **Rule violations**: Are there napkin entries showing rules being ignored or misunderstood?
+
+**Output**: Pattern report with:
+- Top 5 repeated mistakes
+- Top 5 successful approaches
+- Top 3 missing skills/rules
+- Top 3 underperforming rules
+
+### Phase 2: Improvement Proposal
+
+Based on Phase 1 patterns, generate proposals:
+
+**A. New Rules**
+- If 3+ napkin entries show same mistake → propose preventive rule
+- If 3+ tracker entries show same workflow → propose automation rule
+- If 2+ "User Corrections" entries show same behavior → propose enforcement rule
+
+**B. Rule Modifications**
+- If existing rule violated 2+ times → propose strengthening
+- If rule never referenced in tracker → propose deprecation
+- If rule causes confusion (per napkin "Repo Surprises") → propose clarification
+
+**C. New Skills**
+- If 3+ napkin "What Worked" entries in same domain → propose skill
+- If tracker shows repeated manual work → propose automation skill
+- If napkin shows knowledge gap → propose reference skill
+
+**D. Skill Modifications**
+- If skill exists but mistakes still happen → propose enhancement
+- If skill never used (check tracker) → propose deprecation or better INDEX.md entry
+
+**E. Workflow Optimizations**
+- If tracker shows repeated multi-step sequences → propose script/hook
+- If napkin shows repeated coordination issues → propose coordinator rule update
+
+**Output**: Markdown proposal file at `.cursor/evolution/proposals/YYYY-MM-DD-HH-MM.md`
+
+### Phase 3: Impact Simulation
+
+Before proposing changes, simulate impact:
+
+**Safety Checks:**
+1. **Conflict detection**: Would new rule conflict with existing rules?
+2. **Scope analysis**: How many files/workflows would be affected?
+3. **Regression risk**: Could this break existing working patterns?
+4. **Complexity cost**: Does this add more complexity than value?
+
+**Scoring System:**
+- **Value Score** (0-10): How much does this improve the system?
+- **Risk Score** (0-10): How likely is this to cause problems?
+- **Effort Score** (0-10): How much work to implement?
+- **Confidence Score** (0-10): How certain are we this is the right solution?
+
+Only propose changes with:
+- Value Score ≥ 6
+- Risk Score ≤ 4
+- Confidence Score ≥ 7
+
+**Output**: Impact analysis appended to proposal file
+
+### Phase 4: User Review
+
+Present proposal to user with:
+
+```markdown
+## Self-Evolution Proposal: [Title]
+
+**Generated**: YYYY-MM-DD HH:MM
+**Based on**: X napkin entries, Y tracker entries from [date range]
+
+### Pattern Detected
+[Description of the pattern that triggered this proposal]
+
+### Proposed Change
+**Type**: [New Rule | Rule Modification | New Skill | Skill Modification | Workflow Optimization]
+**Target**: [File path or component]
+
+[Detailed description of proposed change]
+
+### Evidence
+- Napkin entries: [list with dates]
+- Tracker entries: [list with dates]
+- Frequency: [how many times this pattern appeared]
+
+### Impact Analysis
+- **Value**: X/10 - [why this adds value]
+- **Risk**: X/10 - [what could go wrong]
+- **Effort**: X/10 - [implementation complexity]
+- **Confidence**: X/10 - [certainty this is correct]
+
+### Implementation Preview
+[Show the actual code/content that would be added/modified]
+
+### Recommendation
+[IMPLEMENT | DEFER | REJECT] - [reasoning]
+```
+
+**User Options:**
+1. **Accept** - Implement the change immediately
+2. **Accept with modifications** - User provides feedback, agent revises
+3. **Defer** - Save to backlog for later review
+4. **Reject** - Discard proposal (record reason in evolution log)
+
+### Phase 5: Implementation
+
+If user accepts:
+
+1. **Backup**: Create `.cursor/evolution/backups/YYYY-MM-DD-HH-MM/` with copies of files to be modified
+2. **Implement**: Make the proposed changes
+3. **Verify**: Run any applicable verification (lints, tests, etc.)
+4. **Document**: Update evolution log at `.cursor/evolution/LOG.md`
+5. **Notify**: Update napkin with "2026-XX-XX Self-evolution implemented [change type]: [brief description]"
+
+### Phase 6: Effectiveness Tracking
+
+After implementation, track effectiveness:
+
+**Monitoring Period**: 7 days (or 5 substantial work sessions, whichever comes first)
+
+**Success Metrics:**
+- **For preventive rules**: Did the mistake stop appearing in napkin?
+- **For automation rules**: Did tracker show time savings?
+- **For new skills**: Was the skill used? (check tracker mentions)
+- **For workflow optimizations**: Did the workflow become more efficient? (check tracker)
+
+**Tracking File**: `.cursor/evolution/tracking/YYYY-MM-DD-change-id.md`
+
+After monitoring period:
+- **Success** (metrics met) → Log success, keep change
+- **Partial** (some metrics met) → Propose refinement
+- **Failure** (metrics not met) → Propose rollback or revision
+
+## Evolution Triggers
+
+### Automatic Triggers (when alwaysApply: true)
+
+**After Tracker Update:**
+```
+IF tracker_updated AND lines_added >= 10 THEN
+  schedule_evolution_analysis(mode="passive", delay="end_of_session")
+END
+```
+
+**After Napkin Update:**
+```
+IF napkin_updated AND (
+  new_mistakes >= 2 OR
+  new_corrections >= 1 OR
+  new_what_worked >= 2
+) THEN
+  schedule_evolution_analysis(mode="passive", delay="end_of_session")
+END
+```
+
+**Periodic Review:**
+```
+IF days_since_last_evolution >= 7 THEN
+  suggest_evolution_review()
+END
+```
+
+### Manual Triggers
+
+User says:
+- "evolve" or "self-evolve" or "self-improve"
+- "analyze patterns" or "what patterns do you see"
+- "suggest improvements" or "how can we improve"
+- "run evolution" or "evolution analysis"
+
+## File Structure
+
+```
+.cursor/evolution/
+├── LOG.md                          # Master log of all evolution events
+├── proposals/                      # Generated proposals
+│   ├── 2026-03-18-14-30.md
+│   └── 2026-03-19-09-15.md
+├── backups/                        # Pre-change backups
+│   ├── 2026-03-18-14-30/
+│   └── 2026-03-19-09-15/
+├── tracking/                       # Effectiveness tracking
+│   ├── 2026-03-18-prevent-pg-version.md
+│   └── 2026-03-19-batch-subagents.md
+└── config.json                     # Evolution settings
+```
+
+## Configuration
+
+`.cursor/evolution/config.json`:
+
+```json
+{
+  "enabled": false,
+  "mode": "passive",
+  "analysis_frequency": "after_substantial_work",
+  "min_pattern_frequency": 3,
+  "min_value_score": 6,
+  "max_risk_score": 4,
+  "min_confidence_score": 7,
+  "monitoring_period_days": 7,
+  "auto_implement": false,
+  "backup_before_changes": true,
+  "notify_on_proposals": true,
+  "excluded_files": [
+    ".cursor/napkin.md",
+    "TRACKER.md"
+  ],
+  "pattern_lookback_days": 30,
+  "require_user_approval": true
+}
+```
+
+## Safety Guardrails
+
+1. **Never auto-implement without approval** (unless `auto_implement: true` in config)
+2. **Always backup before changes** (unless `backup_before_changes: false` in config)
+3. **Never modify napkin.md or TRACKER.md** (these are source data)
+4. **Never propose changes that would break existing functionality**
+5. **Always show impact analysis before implementation**
+6. **Track effectiveness of all changes**
+7. **Provide rollback mechanism**
+
+## Anti-Patterns
+
+### ❌ Don't Over-Evolve
+
+Don't propose changes for every single pattern. Require minimum frequency thresholds.
+
+### ❌ Don't Evolve During Active Work
+
+Schedule evolution analysis for end of session, not mid-task.
+
+### ❌ Don't Create Circular Rules
+
+New rules must not conflict with or contradict existing rules.
+
+### ❌ Don't Propose Premature Optimizations
+
+Require sufficient evidence (3+ occurrences) before proposing changes.
+
+### ❌ Don't Implement Without Tracking
+
+Every change must have effectiveness tracking enabled.
+
+## Integration with Existing Systems
+
+### With Napkin
+- Napkin is **input** to evolution (source of patterns)
+- Evolution results logged **to** napkin (what was implemented)
+- Never modify napkin structure or historical entries
+
+### With Tracker
+- Tracker is **input** to evolution (source of workflow patterns)
+- Evolution milestones logged **to** tracker (major improvements)
+- Never modify tracker structure or historical entries
+
+### With Masterrule
+- Evolution proposals may suggest masterrule modifications
+- Masterrule changes require highest confidence score (9+)
+- Always simulate impact before proposing masterrule changes
+
+### With Coordinator Mode
+- Evolution may propose new coordinator patterns
+- Coordinator improvements based on subagent success/failure patterns
+- Track coordinator effectiveness via tracker entries
+
+## Example Evolution Cycle
+
+**Week 1**: System detects 3 napkin entries about PostgreSQL version mistakes
+→ Proposes new rule: "Always verify PostgreSQL version against current date"
+→ User accepts
+→ Rule implemented with verification step
+
+**Week 2**: Tracker shows rule prevented 2 potential mistakes
+→ Effectiveness tracking: SUCCESS
+→ Rule kept, marked as validated
+
+**Week 3**: System detects 4 "What Worked" entries about parallel subagent dispatch
+→ Proposes skill enhancement: Add parallel dispatch patterns to coordinator skill
+→ User accepts with modifications
+→ Skill updated
+
+**Week 4**: Tracker shows improved coordinator efficiency (3 tasks used new pattern)
+→ Effectiveness tracking: SUCCESS
+→ Skill enhancement validated
+
+## Rollback Procedure
+
+If a change needs to be rolled back:
+
+1. **Locate backup**: `.cursor/evolution/backups/[timestamp]/`
+2. **Restore files**: Copy backup files back to original locations
+3. **Update evolution log**: Record rollback with reason
+4. **Update napkin**: "2026-XX-XX Self-evolution rolled back [change type]: [reason]"
+5. **Mark tracking as FAILED**: Update tracking file with failure analysis
+
+## Reporting
+
+Generate evolution report on demand:
+
+```markdown
+## Self-Evolution Report: [Date Range]
+
+### Summary
+- Proposals generated: X
+- Proposals accepted: Y
+- Proposals rejected: Z
+- Success rate: Y/X
+
+### Successful Changes
+1. [Change 1] - [Impact]
+2. [Change 2] - [Impact]
+
+### Failed Changes
+1. [Change 1] - [Why it failed]
+
+### Current Patterns
+- Top repeated mistakes: [list]
+- Top successful approaches: [list]
+- Emerging patterns: [list]
+
+### Recommendations
+- [Next steps for system improvement]
+```
+
+## Enabling Self-Evolution
+
+**To enable globally:**
+1. Edit this file's frontmatter: `alwaysApply: true`
+2. Create `.cursor/evolution/config.json` with desired settings
+3. System will start passive analysis after next substantial work
+
+**To enable for one session:**
+1. User says "enable self-evolution for this session"
+2. Agent activates evolution mode temporarily
+3. Deactivates at end of session
+
+**To run one-time analysis:**
+1. User says "run evolution analysis"
+2. Agent runs Phases 1-4 without enabling ongoing monitoring
+3. User can accept/reject proposals as normal
