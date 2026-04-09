@@ -56,7 +56,7 @@ This repository contains a pre-configured `.cursor` directory with:
 
 ```bash
 # 1. Clone this repository
-git clone https://github.com/yourusername/ai-skills-engine.git
+git clone https://github.com/payals/ai-skills-engine.git
 cd ai-skills-engine
 
 # 2. Copy to your Cursor project
